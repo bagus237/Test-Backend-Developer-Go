@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserHandler adalah struct untuk menangani permintaan terkait pengguna
+// UserHandler adalah struct untuk menangani permintaan terkait user
 type UserHandler struct {
 	UserRepository *repository.UserRepository
 }
@@ -22,7 +22,7 @@ func NewUserHandler(userRepo *repository.UserRepository) *UserHandler {
 	}
 }
 
-// CreateUser membuat pengguna baru
+// CreateUser membuat user baru
 func (uh *UserHandler) CreateUser(c *gin.Context) {
 	var newUser models.User
 	if err := c.ShouldBindJSON(&newUser); err != nil {
@@ -31,47 +31,47 @@ func (uh *UserHandler) CreateUser(c *gin.Context) {
 	}
 
 	if err := uh.UserRepository.CreateUser(&newUser); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal membuat pengguna baru"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal membuat user baru"})
 		return
 	}
 
 	c.JSON(http.StatusCreated, newUser)
 }
 
-// GetUsers mengambil semua pengguna
+// GetUsers mengambil semua user
 func (uh *UserHandler) GetUsers(c *gin.Context) {
 	users, err := uh.UserRepository.GetAllUsers()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil pengguna"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil user"})
 		return
 	}
 
 	c.JSON(http.StatusOK, users)
 }
 
-// GetUser mengambil detail pengguna berdasarkan ID
+// GetUser mengambil detail user berdasarkan ID
 func (uh *UserHandler) GetUser(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID pengguna tidak valid"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID user tidak valid"})
 		return
 	}
 
 	// Panggil repository untuk mendapatkan detail user
 	userDetail, err := uh.UserRepository.GetUserByID(uint(userID))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Pengguna tidak ditemukan"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "user tidak ditemukan"})
 		return
 	}
 
 	c.JSON(http.StatusOK, userDetail)
 }
 
-// UpdateUser memperbarui informasi pengguna berdasarkan ID
+// UpdateUser memperbarui informasi user berdasarkan ID
 func (uh *UserHandler) UpdateUser(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID pengguna tidak valid"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID user tidak valid"})
 		return
 	}
 
@@ -84,27 +84,27 @@ func (uh *UserHandler) UpdateUser(c *gin.Context) {
 	updatedUser.ID = int(userID) // set ID user dengan ID yang diterima
 
 	if err := uh.UserRepository.UpdateUser(&updatedUser); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal memperbarui pengguna"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal memperbarui user"})
 		return
 	}
 
 	c.JSON(http.StatusOK, updatedUser)
 }
 
-// DeleteUser menghapus pengguna berdasarkan ID
+// DeleteUser menghapus user berdasarkan ID
 func (uh *UserHandler) DeleteUser(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID pengguna tidak valid"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID user tidak valid"})
 		return
 	}
 
 	user := &models.User{ID: int(userID)}
 
 	if err := uh.UserRepository.DeleteUser(user); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghapus pengguna"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghapus user"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Pengguna berhasil dihapus"})
+	c.JSON(http.StatusOK, gin.H{"message": "user berhasil dihapus"})
 }

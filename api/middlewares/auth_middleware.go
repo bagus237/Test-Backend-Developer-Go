@@ -55,8 +55,18 @@ func HandleTokenVerificationError() gin.HandlerFunc {
 		ti, exists := c.Get(ginserver.DefaultConfig.TokenKey)
 		if !exists || ti == nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
 			return
 		}
 		c.Next()
 	}
+
+}
+
+func ErrorHandler(c *gin.Context) {
+	c.Next()
+	for _, err := range c.Errors {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
 }

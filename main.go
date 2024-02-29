@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"test_backend_developer_go/api/handlers"
+	middleware "test_backend_developer_go/api/middlewares"
 	"test_backend_developer_go/config"
 	"test_backend_developer_go/migrations"
 	"test_backend_developer_go/repository"
@@ -16,6 +17,7 @@ import (
 )
 
 func main() {
+
 	// Inisialisasi koneksi database
 	db, err := config.NewDBConnection()
 	if err != nil {
@@ -58,13 +60,14 @@ func main() {
 
 	// Konfigurasi router
 	router := gin.Default()
-
+	//Konfigurasi Error Handler
+	router.Use(middleware.ErrorHandler)
 	// Route untuk autentikasi
 	authRoutes := router.Group("/oauth2")
 	{
 		authRoutes.GET("/token", ginserver.HandleTokenRequest)
 	}
-	//authMiddleware := middleware.HandleTokenVerificationError()
+	authMiddleware := middleware.HandleTokenVerificationError()
 
 	// Route untuk test autentikasi
 	api := router.Group("/api")
@@ -72,13 +75,12 @@ func main() {
 		api.Use(ginserver.HandleTokenVerify())
 		api.GET("/test", func(c *gin.Context) {
 			ti, exists := c.Get(ginserver.DefaultConfig.TokenKey)
-			if exists {
+			if exists && ti != nil {
 				c.JSON(http.StatusOK, ti)
 				return
-			} else {
-				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-				return
 			}
+			// Jika token tidak ditemukan atau tidak valid, kirim respons "Invalid token"
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		})
 	}
 
@@ -100,7 +102,7 @@ func main() {
 	taskRoutes := router.Group("/tasks")
 	{
 		taskRoutes.Use(ginserver.HandleTokenVerify())
-		taskRoutes.POST("/", taskHandler.CreateTask)
+		taskRoutes.POST("/", taskHandler.CreateTask, authMiddleware)
 		taskRoutes.GET("/", taskHandler.GetTasks)
 		taskRoutes.GET("/:id", taskHandler.GetTask)
 		taskRoutes.PUT("/:id", taskHandler.UpdateTask)
