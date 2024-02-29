@@ -9,10 +9,8 @@ import (
 // AutoMigrate berfungsi untuk melakukan migrasi otomatis pada tabel-tabel
 func AutoMigrate(db *gorm.DB) error {
 	// Migrate model-model Anda di sini
-	if err := db.AutoMigrate(&models.User{}).Error; err != nil {
-		return err
-	}
-	if err := db.AutoMigrate(&models.Task{}).Error; err != nil {
+	db.Model(&models.Task{}).AddForeignKey("usuer_id", "users(id)", "RESTRICT", "RESTRICT")
+	if err := db.AutoMigrate(&models.User{}, &models.Task{}).Error; err != nil {
 		return err
 	}
 	return nil
