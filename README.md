@@ -20,10 +20,10 @@ Buat Database Postgresql Baru dengan nama *test_backend_go_db*. Kemudian jalanka
 - GET http://127.0.0.1:8080/users (Untuk Menampilkan Semua User)
 - GET http://127.0.0.1:8080/users/1 (Untuk Menampilkan Semua By ID)
 ### Task
-- POST http://127.0.0.1:8080/users (Untuk membuat Task)
-- DELETE http://127.0.0.1:8080/users/1 (Untuk Menghapus Task by ID) 
-- UPDATE http://127.0.0.1:8080/users/1 (Untuk Mengupdate Task) 
-- GET http://127.0.0.1:8080/users (Untuk Menampilkan Semua Task)
-- GET http://127.0.0.1:8080/users/1 (Untuk Menampilkan Semua Task By ID)
+- POST http://127.0.0.1:8080/tasks (Untuk membuat Task)
+- DELETE http://127.0.0.1:8080/tasks/1 (Untuk Menghapus Task by ID) 
+- UPDATE http://127.0.0.1:8080/tasks/1 (Untuk Mengupdate Task) 
+- GET http://127.0.0.1:8080/tasks (Untuk Menampilkan Semua Task)
+- GET http://127.0.0.1:8080/tasks/1 (Untuk Menampilkan Semua Task By ID)
 
 Untuk collection postmannya sudah ada tinggal digunakan 
