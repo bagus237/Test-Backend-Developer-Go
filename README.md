@@ -7,8 +7,10 @@
 - Oauth 2.0
 - Postgresql (https://www.postgresql.org/)
 
-
 ## How To Use
+Buat Database Postgresql Baru dengan nama *test_backend_go_db*
+Kemudian jalankan Program golangnya
+
 ### Token
 - GET http://127.0.0.1:8080/oauth2/token?grant_type=client_credentials&client_id=000000&client_secret=999999&scope=read (Untuk Melakukan Generate Token Oauth 2.0)
 - POST http://127.0.0.1:8080/api/test?access_token={token} (Untuk Test Token valid atau tidak)
