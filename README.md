@@ -26,4 +26,4 @@ Buat Database Postgresql Baru dengan nama *test_backend_go_db*. Kemudian jalanka
 - GET http://127.0.0.1:8080/tasks (Untuk Menampilkan Semua Task)
 - GET http://127.0.0.1:8080/tasks/1 (Untuk Menampilkan Semua Task By ID)
 
-Untuk collection postmannya sudah ada tinggal digunakan 
+Untuk collection postmannya sudah ada tinggal digunakan dengan nama Test Backend Developer Go.postman_collection.json
