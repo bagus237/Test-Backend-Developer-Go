@@ -1,4 +1,4 @@
-# Tugas ini saya buat untuk memenuhi persyaratan untuk Teknikal Test PT Intikom Berlian Mustika Sebagai Golang Developer
+# Tugas ini saya buat untuk memenuhi persyaratan untuk Teknikal Test Bank Ina Sebagai Golang Developer
 
 ## Technologies
 - Go
